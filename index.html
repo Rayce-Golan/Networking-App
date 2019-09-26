@@ -1,0 +1,58 @@
+<html>
+<head>
+	<title>Test Login/Register Page</title>
+	<script>
+		const firebaseConfig = {
+			apiKey: "AIzaSyCqJuHTJhMDFaVrjG3VuLo5dXW8OORpFMg",
+			authDomain: "test-website-and-database.firebaseapp.com",
+			databaseURL: "https://test-website-and-database.firebaseio.com",
+			projectId: "test-website-and-database",
+			storageBucket: "test-website-and-database.appspot.com",
+			messagingSenderId: "495425967609",
+			appId: "1:495425967609:web:96d331828d50cc544dd928"
+		};
+	</script>
+	<script src="/__/firebase/6.6.2/firebase-app.js"></script>
+	<script src="/__/firebase/6.6.2/firebase-firestore.js"></script>
+	<script src="/__/firebase/6.6.2/firebase-auth.js"></script>
+	<script src="/__/firebase/init.js"></script>
+</head>
+<body>
+	
+
+	Email: <input type="text" name="fname" id="EMAIL"><br/>
+	Password: <input type="text" name="lname" id="PASSWORD"><br/>	
+	<button onclick="login();">Login</button>
+	<a onclick="return(login());" href="http://www.google.com/">LINK</a>
+
+	<span id="ERROR"></span>
+
+	<script>
+	firebase.auth().onAuthStateChanged(function(user) {
+		if (user) {
+		// User is signed in.
+			window.location.href = "http://www.google.com";
+		} else {
+		// No user is signed in.
+			alert("Signed Out");
+		}
+	});
+
+	function login() {
+		var email = document.getElementById("EMAIL").value;
+		var password = document.getElementById("PASSWORD").value;
+		var errorx = document.getElementById("ERROR");
+			
+		firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+			// Handle Errors here.
+			var errorCode = error.code;
+			var errorMessage = error.message;
+			errorx.innerHTML = errorMessage;
+			
+			alert(errorMessage);
+			// ...
+		});
+	}
+	</script>
+</body>
+</html>
