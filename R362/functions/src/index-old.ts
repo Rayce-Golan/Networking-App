@@ -14,12 +14,11 @@ admin.initializeApp();
 
 export const OnUserCreate = functions.auth.user().onCreate(
     (user) => {
-        const UserDocRef = "Users/" + user.email;
+        const UserDocRef = "Users/" + user.uid;
         const UserDocCont = {
-            Email : user.email,
-            IDNumber : user.uid,
-            Verified : user.emailVerified,
-            Created : user.metadata.creationTime
+            email : user.email,
+            verified : user.emailVerified,
+            created : user.metadata.creationTime
         };
 
         console.log(UserDocRef);
@@ -29,21 +28,16 @@ export const OnUserCreate = functions.auth.user().onCreate(
     }
 );
 
-export const OnUserPost = functions.firestore.document("Form Root/{RootID}/{RootID_MastColl}/{SubTagID}/{SunTagColl}/{ChatGroup}/{ChatRoom}/{POSTID}").onCreate(
+export const OnUserPost = functions.firestore.document("Forums/{ForumID}/Posts/{PostID}").onCreate(
     async (snapshot, context) => {
         
         const snap = snapshot.data();
 
         if(snap) {
-            const UserPostRef = "Users/" + context.params.POSTID + "/Posts/" 
+            const UserPostRef = "Users/" + snap.UserID + "/Posts/"
             const UserPostCont = {
-                Form_Root : context.params.RootID,
-                RootID_MastColl : context.params.RootID_MastColl,
-                SubTagID : context.params.SubTagID,
-                SunTagColl : context.params.SunTagColl,
-                ChatGroup : context.params.ChatGroup,
-                ChatRoom : context.params.ChatRoom,
-                POSTID : context.params.POSTID
+                ForumID : context.params.ForumID,
+                PostID : context.params.PostID
             };
 
             const UserPostsCollection = admin.firestore().collection(UserPostRef);
